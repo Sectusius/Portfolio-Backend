@@ -1,45 +1,29 @@
-const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
-const connection = require("./database");
-const User = connection.models.User;
+const fs = require('fs')
+const path = require('path')
+const ExtractJwt = require('passport-jwt').ExtractJwt
+const JwtStrategy = require('passport-jwt').Strategy
+const User = require('../models/User')
 
-const customFields={
-    usernameField: 'uname',
-    passwordField: 'pw',
-};
 
-const verifyCallback = (username, password, done) =>{
-    User.findOne({username:username})
-        .then((user)=>{
+const pathToKey = path.join(__dirname, '..', 'pub_key.pem')
+const PUB_KEY = fs.readFileSync(pathToKey, 'utf8')
 
-            if(!user){return done(null, false)}
+const options = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: PUB_KEY,
+  algorithms: ['RS256'],
+}
 
-            const isValid = validPassword(password, user.hash, user.salt);
+const strategy = new JwtStrategy(options, (payload, done) => {
+  User.findOne({ _id: payload.sub })
+    .then((user) => {
+      if (user) {
+        done(null, user)
+      } else done(null, false)
+    })
+    .catch((err) => done(err, null))
+})
 
-            if(isValid){
-                return done(null, user);
-            }
-            else{
-                return done(null, false);
-            }
-        })
-        .catch((err)=>{
-            done(err);
-        })
-};
-
-const startegy = new LocalStrategy(customFields, verifyCallback);
-
-passport.use(startegy);
-
-passport.serializeUser((user, done)=>{
-    done(null, user.id);
-});
-
-passport.deserializeUser((userId, done)=>{
-    User.findById(userId)
-        .then((user)=>{
-            done(null, user);
-        })
-        .catch(err => done(err))
-});
+module.exports = (passport) => {
+  passport.use(strategy)
+}

@@ -3,19 +3,13 @@ require('dotenv').config();
 
 const connectionString=process.env.DB_STRING
 
-const connection = mongoose.createConnection(connectionString, {
+if (process.env.NODE_ENV==='production'){
+    connectionString=process.env.DB_STRING_PROD
+}
+
+mongoose.connect(connectionString,{
     useNewUrlParser: true,
     useUnifiedTopology: true
-});
-
-const UserSchema = new mongoose.Schema({
-    username: String,
-    hash: String,
-    salt: String
-});
-
-
-const User = connection.model('User', UserSchema);
-
-
-module.exports = connection;
+})
+    .then(db => console.log("Db connected"))
+    .catch(err=> console.log(err));

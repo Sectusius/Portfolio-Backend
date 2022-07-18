@@ -4,8 +4,9 @@ const User = mongoose.model(
     new mongoose.Schema({
         username:{type:String, required: true},
         email:{type:String, required: true},
-        password:{type:String, required: true},
-        role:{type:number, required:true},
+        role:{type:Number, required:true},
+        hash:{type:String,required:true},
+        salt:{type:String,required:true},
     })
 );
 module.exports = User;
