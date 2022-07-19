@@ -22,7 +22,13 @@ exports.signUp = (req, res, next) => {
         })
         newUser
           .save().then((user)=>{
-            return res.json(200, user)
+            const jwt = utils.issueJWT(user)
+            res.status(200).json({
+              success: true,
+              user: user,
+              token: jwt.token,
+              expiresIn: jwt.expires,
+            })
           })
           .catch((err) => next(err))
       } else res.status(409).json({ success: false, msg: 'Email ya registrado' })
