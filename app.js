@@ -6,7 +6,7 @@ var crypto = require ("crypto");
 var routes = require ("./app/routes");
 const connection = require("./app/config/database");
 const { appendFile } = require("fs");
-
+const cors = require("cors");
 
 const MongoStore = require("connect-mongo")
 
@@ -17,6 +17,7 @@ require("dotenv").config();
 var app = express();
 
 app.use(express.json());
+app.use(cors({origin:true, credentials: true}))
 app.use(express.urlencoded({extended: true}));
 
 //--------------------SESSION SETUP ----------------------------
