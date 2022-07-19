@@ -19,9 +19,10 @@
   },
   "name": "portfolio-backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "dev": "nodemon app/index.js"
+    "dev": "nodemon app/index.js",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",

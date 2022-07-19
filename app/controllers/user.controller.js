@@ -4,7 +4,7 @@ const utils = require('../lib/passwordUtils');
 
 
 exports.signUp = (req, res, next) => {
-    User.findOne({ email: req.body.email.trim() }).then((user) => {
+    User.findOne({ username: req.body.username.trim() }).then((user) => {
       if (!user) {
         // if user not found, create user, else inform error
         console.log(req.body.password)
@@ -30,7 +30,7 @@ exports.signUp = (req, res, next) => {
   }
 
 exports.logIn = (req, res, next) => {
-    User.findOne({ cuil: req.body.cuil.trim() })
+    User.findOne({ username: req.body.username.trim() })
       .then((user) => {
         if (!user) {
           return res
