@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 require('dotenv').config();
 
-const connectionString=process.env.DB_STRING
+let connectionString=process.env.DB_STRING
 
 if (process.env.NODE_ENV==='production'){
     connectionString=process.env.DB_STRING_PROD
