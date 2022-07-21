@@ -33,13 +33,10 @@ exports.upload=(req, res, done)=>{
         imageDesc: req.body.des.trim(),
     })
     
-    Image.update({'imageDesc':req.body.des},{$set:{imageUrl:newImage.imageUrl, imageDesc:newImage.imageDesc}},{upsert:true});
+    Image.updateOne({imageDesc:req.body.des},{$set:{imageUrl:newImage.imageUrl, imageDesc:newImage.imageDesc}},{upsert:true});
 }
 
 exports.showImg=(req,res, done)=>{
-    Image.find({}).then((images)=>{
-        console.log(images)
-    })
     Image.findOne({imageDesc: req.params.param}).then((image)=>{
         console.log(image)
         if(!image){
