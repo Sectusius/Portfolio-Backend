@@ -1,6 +1,7 @@
 var multer  = require('multer');
 var express = require('express');
-var Image = require("../models/Images")
+var Image = require("../models/Images");
+const { findOne } = require('../models/Images');
 
 var storage=multer.diskStorage({
     destination:(req,res, done) =>{
@@ -27,17 +28,24 @@ var storage=multer.diskStorage({
 var upload=multer({storage:storage});
 
 exports.upload=(req, res, done)=>{
-    console.log(req.body)
-    const newImage=new Image({
-        imageUrl: req.body.url,
-        imageDesc: req.body.des.trim(),
-    })
-    console.log(newImage)
-    Image.updateOne({imageDesc:req.body.des},{$set:{imageUrl:req.body.url, imageDesc:req.body.des}},{upsert:true}).then((algo)=>{
-        console.log(algo)
-    }).catch((err)=>{
-        console.log(err)
-    })
+    Image.findOne({imageDesc:req.body.des}).then((img) =>{
+        if(img){
+            Image.updateOne({imageDesc:req.body.des},{$set:{imageUrl:req.body.url, imageDesc:req.body.des}},{upsert:true}).then((algo)=>{
+                console.log(algo)
+            }).catch((err)=>{
+                console.log(err)
+            })
+        }
+        else{
+            const newImage=new Image({
+              imageUrl:req.body.url,
+              imageDesc:req.body.des  
+            })
+            newImage.save();
+        }
+    }
+    )
+
 }
 
 exports.showImg=(req,res, done)=>{
