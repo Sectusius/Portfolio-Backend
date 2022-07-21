@@ -1,5 +1,6 @@
 var multer  = require('multer');
 var express = require('express');
+var Image = require("../models/Images")
 
 var storage=multer.diskStorage({
     destination:(req,res, done) =>{
