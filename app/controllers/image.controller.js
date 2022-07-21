@@ -31,9 +31,9 @@ exports.upload=(req, res, done)=>{
     Image.findOne({imageDesc:req.body.des}).then((img) =>{
         if(img){
             Image.updateOne({imageDesc:req.body.des},{$set:{imageUrl:req.body.url, imageDesc:req.body.des}},{upsert:true}).then((algo)=>{
-                console.log(algo)
+                return res.status(200).json(img);
             }).catch((err)=>{
-                console.log(err)
+                next(err)
             })
         }
         else{
@@ -41,7 +41,9 @@ exports.upload=(req, res, done)=>{
               imageUrl:req.body.url,
               imageDesc:req.body.des  
             })
-            newImage.save();
+            newImage.save().then((image)=> {
+                return res.status(200).json(image);
+            })
         }
     }
     )
