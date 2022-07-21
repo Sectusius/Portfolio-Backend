@@ -6,5 +6,6 @@ router.post("/login",userCtrl.logIn)
 
 router.get("/user",userCtrl.getUsers)
 router.get("/user/:user_id",userCtrl.showUser)
+router.get("/user/:user_id", userCtrl.getRol)
 
 module.exports=router
