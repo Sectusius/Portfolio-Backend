@@ -29,11 +29,11 @@ var upload=multer({storage:storage});
 exports.upload=(req, res, done)=>{
     console.log(req.body)
     const newImage=new Image({
-        imageUrl: req.body.imageUrl,
-        imageDesc: req.body.imageDesc.trim(),
+        imageUrl: req.body.url,
+        imageDesc: req.body.des.trim(),
     })
     
-    Image.update({'imageDesc':req.body.imageDesc},{$set:{imageUrl:newImage.imageUrl, imageDesc:newImage.imageDesc}},{upsert:true});
+    Image.update({'imageDesc':req.body.des},{$set:{imageUrl:newImage.imageUrl, imageDesc:newImage.imageDesc}},{upsert:true});
 }
 
 exports.showImg=(req,res, done)=>{
