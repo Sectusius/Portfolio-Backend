@@ -37,6 +37,7 @@ exports.upload=(req, res, done)=>{
 }
 
 exports.showImg=(req,res, done)=>{
+    console.log(req.params.param)
     Image.findOne({imageDesc: req.params.param}).then((image)=>{
         if(!image){
             return res.status(401).json({succsses:false, msg:'Could not find image'})
