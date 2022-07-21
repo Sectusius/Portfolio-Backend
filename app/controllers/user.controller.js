@@ -94,4 +94,13 @@ exports.showUser = (req, res, next) => {
       }
       return res.status(200).json(user)
     })
-  }
+}
+
+exports.getRol=(req, res, next)=>{
+  user.findOne({_id:req.params.user_id}).then((user)=>{
+    if(!user){
+      return res.status(401).json({success:false, msg: 'Could not find user'})
+    }
+    return res.status(200).json(user.role);
+  })
+}
