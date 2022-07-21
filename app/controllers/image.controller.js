@@ -1,5 +1,6 @@
 var multer  = require('multer');
 var express = require('express');
+var Image = require("../models/Images")
 
 var storage=multer.diskStorage({
     destination:(req,res, done) =>{
@@ -27,7 +28,7 @@ var upload=multer({storage:storage});
 
 exports.upload=(req, res, done)=>{
     const newImage=new Image({
-        imageUrl: 'https://portfolio-backend-petraccaro.herokuapp.com/images'+ req.file.filename,
+        imageUrl: req.body.imageUrl,
         imageDesc: req.body.imageDesc.trim(),
     })
     Image.update({'imageDesc':req.body.imageDesc},{$set:{imageUrl:newImage.imageUrl, imageDesc:newImage.imageDesc}},{upsert:true});
