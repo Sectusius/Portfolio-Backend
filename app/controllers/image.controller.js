@@ -28,6 +28,7 @@ var storage=multer.diskStorage({
 var upload=multer({storage:storage});
 
 exports.upload=(req, res, done)=>{
+    console.log(req.body)
     Image.findOne({imageDesc:req.body.des}).then((img) =>{
         if(img){
             Image.updateOne({imageDesc:req.body.des},{$set:{imageUrl:req.body.url, imageDesc:req.body.des}},{upsert:true}).then((algo)=>{
