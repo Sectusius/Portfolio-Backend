@@ -33,7 +33,7 @@ exports.upload=(req, res, done)=>{
         imageDesc: req.body.des.trim(),
     })
     console.log(newImage)
-    Image.updateOne({imageDesc:req.body.des},{$set:{imageUrl:newImage.imageUrl, imageDesc:newImage.imageDesc}},{upsert:true});
+    Image.updateOne({imageDesc:req.body.des},{$set:{imageUrl:req.body.url, imageDesc:req.body.des}},{upsert:true});
 }
 
 exports.showImg=(req,res, done)=>{
