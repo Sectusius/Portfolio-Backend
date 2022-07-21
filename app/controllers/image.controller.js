@@ -32,7 +32,7 @@ exports.upload=(req, res, done)=>{
         imageUrl: req.body.url,
         imageDesc: req.body.des.trim(),
     })
-    
+    console.log(newImage)
     Image.updateOne({imageDesc:req.body.des},{$set:{imageUrl:newImage.imageUrl, imageDesc:newImage.imageDesc}},{upsert:true});
 }
 
