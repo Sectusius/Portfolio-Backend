@@ -6,7 +6,7 @@ exports.uploadText=(req, res, done)=>{
     console.log(req.body)
     Text.findOne({textLocation:req.body.textLocation}).then((text)=>{
         if(text){
-            Text.updateOne({textLocation:req.body.textLocation},{$set:{textBody:req.body.textBody}},{upsert:true}).then((done)=>{
+            Text.updateOne({textLocation:req.body.textLocation},{$set:{textBody:req.body.textBody, textLocation:req.body.textLocation}},{upsert:true}).then((done)=>{
                 return res.status(200).json(text)
             }).catch((err)=>{
                 next(err)
@@ -15,7 +15,7 @@ exports.uploadText=(req, res, done)=>{
         else{
             const newText = new Text({
                 textBody:req.body.textBody,
-                textLocation:req.body.textBody
+                textLocation:req.body.textLocation
             })
             newText.save().then((text)=>{
                 return res.status(200).json(text)
